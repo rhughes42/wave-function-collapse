@@ -41,7 +41,7 @@ namespace WaveFunctionCollapse.Components
             pManager.AddNumberParameter("AverageWeights", "", "", GH_ParamAccess.list);
         }
 
-       protected override void SolveInstance(IGH_DataAccess DA)
+        protected override void SolveInstance(IGH_DataAccess DA)
         {
             GH_WaveCollapseResults waveCollapseDataset = new GH_WaveCollapseResults();
             DA.GetData<GH_WaveCollapseResults>(0, ref waveCollapseDataset);
@@ -117,7 +117,7 @@ namespace WaveFunctionCollapse.Components
                     // Save 03
                     saveSeries(blurredNoiseReduced03, blurredNoiseReducedMasked, "third");
 
-                    
+
                 }
 
 
@@ -136,7 +136,7 @@ namespace WaveFunctionCollapse.Components
 
         }
 
-        void processTheImage
+        //void processTheImage
 
         void saveSeries(Color[,] a, Color[,] b, string name)
         {
@@ -150,11 +150,11 @@ namespace WaveFunctionCollapse.Components
             Utils.SaveToPicture(mergedImages, 0, name, _imageBuffer);
         }
 
-        List<float> averagePatternOccurence (List<List<int>> list)
+        List<float> averagePatternOccurence(List<List<int>> list)
         {
             List<float> average = new List<float>();
 
-            for(int i = 0; i < list[0].Count; i++)
+            for (int i = 0; i < list[0].Count; i++)
             {
                 average.Add(0);
             }
@@ -197,7 +197,7 @@ namespace WaveFunctionCollapse.Components
             {
                 for (int j = 0; j < superposition.GetLength(1); j++)
                 {
-                    if (masked[i,j] == black)
+                    if (masked[i, j] == black)
                     {
                         int index = superposition[i, j].collapsedIndex;
                         goodPatternsOccurence[index]++;
@@ -208,7 +208,7 @@ namespace WaveFunctionCollapse.Components
             return goodPatternsOccurence;
         }
 
-        
+
 
         Superposition[,] RemoveNoiseFromImage(WaveCollapseHistoryElement wfc, PatternFromSampleElement p)
         {
@@ -238,7 +238,7 @@ namespace WaveFunctionCollapse.Components
         void RemoveSingleCells(ref Superposition[,] newSuperpositon, Superposition[,] existingSuperpositions,
             Superposition empty, int neighbourLimit, int iterations)
         {
-            
+
             for (int k = 0; k < iterations; k++)
             {
                 int removed = 0;
@@ -265,7 +265,7 @@ namespace WaveFunctionCollapse.Components
                 Console.WriteLine("removed: " + removed);
             }
 
-            
+
         }
 
 
@@ -294,39 +294,39 @@ namespace WaveFunctionCollapse.Components
                     if (k == i + 1 && m == j - 1) continue;
                     if (k == i + 1 && m == j - 1) continue;
 
-                    
+
                     var neighbourState = superpositions[k, m].state;
                     if (neighbourState == State.HALF_TILE || neighbourState == State.FULL_TILE)
                     {
-                            neighbours++;
+                        neighbours++;
                     }
-                    
+
                 }
             }
 
             return neighbours;
         }
 
-        Superposition FindEmptySuperpositionToReplace (Superposition[,] superpositions, List<Pattern> patterns)
+        Superposition FindEmptySuperpositionToReplace(Superposition[,] superpositions, List<Pattern> patterns)
         {
-            Superposition x = new Superposition(superpositions[0,0], patterns);
+            Superposition x = new Superposition(superpositions[0, 0], patterns);
 
             for (int i = 0; i < superpositions.GetLength(0); i++)
             {
                 for (int j = 0; j < superpositions.GetLength(1); j++)
                 {
-                    if (superpositions[i,j].state == State.EMPTY)
+                    if (superpositions[i, j].state == State.EMPTY)
                     {
                         return superpositions[i, j];
                     }
                 }
             }
 
-            return null; 
+            return null;
         }
 
         // Create new superpositions that are empty. 
-        Superposition[,] NewCopiedSuperposition (Superposition[,] superpositions, List<Pattern> patterns)
+        Superposition[,] NewCopiedSuperposition(Superposition[,] superpositions, List<Pattern> patterns)
         {
             var empty = new Superposition[superpositions.GetLength(0), superpositions.GetLength(1)];
             {
@@ -344,7 +344,7 @@ namespace WaveFunctionCollapse.Components
 
 
 
-        int[,] doubleTheImage (int[,] image)
+        int[,] doubleTheImage(int[,] image)
         {
             int[,] newImage = new int[image.GetLength(0) * 2, image.GetLength(1)];
 
@@ -352,7 +352,7 @@ namespace WaveFunctionCollapse.Components
             {
                 for (int j = 0; j < newImage.GetLength(1); j++)
                 {
-                    if (i > image.GetLength(0)-1 && i < newImage.GetLength(0))
+                    if (i > image.GetLength(0) - 1 && i < newImage.GetLength(0))
                     {
                         newImage[i, j] = image[i - image.GetLength(0), j];
                     }
@@ -364,10 +364,10 @@ namespace WaveFunctionCollapse.Components
             }
 
             return newImage;
-            
+
         }
 
-        Color[,] mergeTwoImages (Color[,] imageOriginal, Color[,] imageProcessed)
+        Color[,] mergeTwoImages(Color[,] imageOriginal, Color[,] imageProcessed)
         {
             Color[,] merged = new Color[imageOriginal.GetLength(0) + imageProcessed.GetLength(0), imageOriginal.GetLength(1)];
 
